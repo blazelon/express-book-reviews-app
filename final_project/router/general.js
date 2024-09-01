@@ -14,73 +14,78 @@ publicUsers.post("/register", (req, res) => {
         // Check if the user does not already exist
         if (!isValid(username)) {
             // Add the new user to the users array
-            users.push({"username": username, "password": password});
-            return res.status(200).json({message: "User successfully registered. Now you can login"});
+            users.push({ "username": username, "password": password });
+            return res.status(200).json({ message: "User successfully registered. Now you can login" });
         } else {
-            return res.status(404).json({message: "User already exists!"});
+            return res.status(404).json({ message: "User already exists!" });
         }
     }
     // Return error if username or password is missing
-    return res.status(404).json({message: "Unable to register user."});
+    return res.status(404).json({ message: "Unable to register user." });
+});
+
+// TODO: Remove
+publicUsers.get('/users', function (req, res) {
+    return res.status(200).json({ data: users });
 });
 
 // Get the book list available in the shop
-publicUsers.get('/',function (req, res) {
-  return res.status(200).json({data: books});
+publicUsers.get('/', function (req, res) {
+    return res.status(200).json({ data: books });
 });
 
 // Get book details based on ISBN
-publicUsers.get('/isbn/:isbn',function (req, res) {
-    const isbn = req.body.isbn;
+publicUsers.get('/isbn/:isbn', function (req, res) {
+    const isbn = req.params.isbn;
 
     if (!isbn || isbn === '') {
-        return res.status(400).json({message: "Bad request. Missing ISBN in params."});
+        return res.status(400).json({ message: "Bad request. Missing ISBN in params." });
     }
 
     const doesBookExist = Object.keys(books).includes(isbn);
 
     if (!doesBookExist) {
-        return res.status(404).json({message: "Book with requested ISBN not found."});
+        return res.status(404).json({ message: "Book with requested ISBN not found." });
     }
-    return res.status(200).json({data: books[isbn]});
- });
-  
+    return res.status(200).json({ data: books[isbn] });
+});
+
 // Get book details based on author
-publicUsers.get('/author/:author',function (req, res) {
-    const author = req.body.author;
+publicUsers.get('/author/:author', function (req, res) {
+    const author = req.params.author;
 
     if (!author || author === '') {
-        return res.status(400).json({message: "Bad request. Missing author in params."});
+        return res.status(400).json({ message: "Bad request. Missing author in params." });
     }
 
-    return res.status(200).json({data: getBooksBy({ key: 'author', value: author })});
+    return res.status(200).json({ data: getBooksBy({ key: 'author', value: author }) });
 });
 
 // Get all books based on title
-publicUsers.get('/title/:title',function (req, res) {
-    const title = req.body.title;
+publicUsers.get('/title/:title', function (req, res) {
+    const title = req.params.title;
 
     if (!title || title === '') {
-        return res.status(400).json({message: "Bad request. Missing title in params."});
+        return res.status(400).json({ message: "Bad request. Missing title in params." });
     }
 
-    return res.status(200).json({data: getBooksBy({ key: 'title', value: title })});
+    return res.status(200).json({ data: getBooksBy({ key: 'title', value: title }) });
 });
 
 //  Get book review
-publicUsers.get('/review/:isbn',function (req, res) {
-    const isbn = req.body.isbn;
+publicUsers.get('/review/:isbn', function (req, res) {
+    const isbn = req.params.isbn;
 
     if (!isbn || isbn === '') {
-        return res.status(400).json({message: "Bad request. Missing ISBN in params."});
+        return res.status(400).json({ message: "Bad request. Missing ISBN in params." });
     }
 
     const doesBookExist = Object.keys(books).includes(isbn);
 
     if (!doesBookExist) {
-        return res.status(404).json({message: "Book with requested ISBN not found."});
+        return res.status(404).json({ message: "Book with requested ISBN not found." });
     }
-    return res.status(200).json({data: books[isbn].reviews});
+    return res.status(200).json({ data: books[isbn].reviews });
 });
 
 const getBooksBy = ({ key, value }) => {

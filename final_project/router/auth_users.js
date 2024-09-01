@@ -27,7 +27,7 @@ regdUsers.post("/login", (req, res) => {
     if (authenticatedUser(username, password)) {
         // Generate JWT access token
         let accessToken = jwt.sign({
-            data: password
+            data: username
         }, 'access', { expiresIn: 60 * 60 });
 
         // Store access token and username in session
@@ -51,7 +51,7 @@ regdUsers.put("/auth/review/:isbn", (req, res) => {
 
     let review = req.body.review;
     if (review) {
-        book["reviews"][req.user] = review;
+        book["reviews"][req.user.data] = review;
     }
     books[isbn] = book;
     res.send(`Book review with the ISBN ${isbn} updated.`);
@@ -66,9 +66,8 @@ regdUsers.delete("/auth/review/:isbn", (req, res) => {
         return;
     }
 
-    
-    delete book["reviews"][req.user];
-    
+    delete book["reviews"][req.user.data];
+
     res.send(`Book review with the ISBN ${isbn} updated.`);
 });
 

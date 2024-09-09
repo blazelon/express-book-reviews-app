@@ -56,7 +56,9 @@ publicUsers.get('/author/:author', function (req, res) {
     const booksbyauthor = {};
     for (let isbn in books) {
         if (books[isbn]['author'] === author) {
-            booksbyauthor[isbn] = books[isbn];
+            booksbyauthor.isbn = isbn;
+            booksbyauthor.title = books[isbn].title;
+            booksbyauthor.reviews = books[isbn].reviews;
         }
     }
 
@@ -74,7 +76,9 @@ publicUsers.get('/title/:title', function (req, res) {
     const booksbytitle = {};
     for (let isbn in books) {
         if (books[isbn]['title'] === title) {
-            booksbytitle[isbn] = books[isbn];
+            booksbytitle.isbn = isbn;
+            booksbytitle.author = books[isbn].author;
+            booksbytitle.reviews = books[isbn].reviews;
         }
     }
 

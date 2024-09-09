@@ -54,7 +54,7 @@ regdUsers.put("/auth/review/:isbn", (req, res) => {
         book["reviews"][req.user.data] = review;
     }
     books[isbn] = book;
-    res.send(`Book review with the ISBN ${isbn} updated.`);
+    res.send(`Book review with the ISBN ${isbn} added/updated.`);
 });
 
 // Delete a book review
@@ -68,7 +68,7 @@ regdUsers.delete("/auth/review/:isbn", (req, res) => {
 
     delete book["reviews"][req.user.data];
 
-    res.send(`Book review with the ISBN ${isbn} updated.`);
+    res.send(`Book review with the ISBN ${isbn} deleted.`);
 });
 
 module.exports.authenticated = regdUsers;
